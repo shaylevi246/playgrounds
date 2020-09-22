@@ -1,30 +1,57 @@
-<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title> התחברות למערכת </title>
-        <link rel="stylesheet" href="styles.css">
-        
-    </head>
-    <style>
-        body{
-            background-image: url("images/entrance.jpg");
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-    </style>
-    <div class="login-box">
-            <h1>Login</h1>
-            <div class="textbox">
-                <i class="fa fa-user" aria-hidden="true"></i>
-            <input type="text" placeholder="Username" name="" value="">
-            </div>
-            
-            <div class="textbox">
-                <i class="fa fa-lock" aria-hidden="true"></i>
-            <input type="password" placeholder="Password" name="" value="">
-            </div>
-            
-            <input class="btn" type="button" name="" value="Sign in">        
-     </div>
+
+<head>
+  <title>כניסת משתמשים</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="images/favicon.ico">
+</head>
+
+<body>
+
+  <div id="login_div" class="main-div">
+    <h3>ברוכים הבאים לכניסת משתמשים</h3>
+    <input type="email" placeholder="הכנס אימייל כאן" id="email_field" />
+    <input type="password" placeholder="הכנס סיסמה כאן" id="password_field" />
+
+    <button onclick="login()">היכנס למשתמש</button>
+  </div>
+
+  <div id="user_div" class="loggedin-div">
+    <h3>Welcome User</h3>
+    <p id="user_para">Welcome to Firebase web login Example. You're currently logged in.</p>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <body>
+    <td><a class="btn" href="index.html">חזרה לדף הראשי</a></td>
+    <table class="cloudTable">
+      <tr>
+        <td><img src="images/cloud2.png" alt="cloud2-img" width="150"></td>
+        <td><img src="images/cloud1.png" alt="cloud1-img" width="150"></td>
+      </tr>
+    </table>
+  </body>
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCUfa_nyVOPDF_9EU-liWhe1kR6qDgjZB0",
+      authDomain: "playgrounds-in-holon.firebaseapp.com",
+      databaseURL: "https://playgrounds-in-holon.firebaseio.com",
+      projectId: "playgrounds-in-holon",
+      storageBucket: "playgrounds-in-holon.appspot.com",
+      messagingSenderId: "204381860815",
+      appId: "1:204381860815:web:0586fc370db4b0353f58ba",
+      measurementId: "G-RN3EEYDT9H"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script src="js/login.js"></script>
+
+</body>
+
 </html>

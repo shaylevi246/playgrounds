@@ -1,0 +1,152 @@
+body{
+  background-color: #e4f9f5;
+  padding: 0;
+  margin: 0;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+}
+
+.headline{
+  text-align: center;
+  margin-top: 3%;
+  font-size: 50px;
+}
+
+.promo {
+  text-align: center;
+  font-size: 23px;
+}
+
+.list_table, th, td{
+    border: 3px solid black;
+    border-collapse: collapse;
+    background-color: white;
+}
+th{
+    background-color: #81b214;
+    font-size: 25px;
+    padding: 10px;
+}
+td{
+    text-align: center;
+    padding: 5px;
+    font-size: 20px;
+    font-style: italic;
+}
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  color: blue;
+  border-bottom: 1px solid black;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+
+  right: 120%;
+  width: 150px;
+  background-color: #79d70f;
+  color: black;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 5%;
+  left: 100%; /* To the right of the tooltip */
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent #79d70f;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+.btn{
+  font-family: arial;
+  text-transform: uppercase;
+  font-size: 25px;
+  width: 220px;
+  height: 50px;
+  border-radius: 80px;
+  line-height: 50px;
+  text-align: center;
+  border: 3px solid #009688;
+  display: block;
+  text-decoration: none;
+  margin: 100px auto;
+  color: #009688;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+}
+
+.btn:before{
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: #009688;
+  opacity: .5;
+  top: -100%;
+  left: 0;
+  z-index: -1;
+  transition: .3s;
+}
+
+.btn:after{
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: #009688;
+  top: -100%;
+  left: 0;
+  z-index: -1;
+  transition: .3s;
+  transition-delay: .2s;
+}
+
+.btn:hover{
+  color: #fff;
+}
+
+.btn:hover:before{
+  top: 0;
+}
+
+.btn:hover:after{
+  top: 0;
+}
+
+.playground_list{
+  display: block;
+  margin: auto;
+  margin-top: -145px
+}
+
+.playground_grass{
+  background-color: #79d70f;
+  width: 100%;
+  height: 160px;
+  margin-top: -50px;
+}

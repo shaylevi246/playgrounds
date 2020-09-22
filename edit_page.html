@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="images/favicon.ico">
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+</head>
+
+<body>
+  <h1 class="headline">הוספת גן שעשועים</h1>
+
+  <table class="addTable">
+    <tr>
+      <td>
+        <input type="text" placeholder="הכנס מספר גן כאן" name="id" id="id">
+      </td>
+    </tr>
+    <tr>
+      <td><input type="text" placeholder="הכנס כתובת כאן" name="address" id="address">
+      </td>
+    </tr>
+    <tr>
+      <td><input type="text" placeholder="הכנס קו אורך כאן" name="latitude" id="latitude">
+      </td>
+    </tr>
+    <tr>
+      <td><input type="text" placeholder="הכנס קו רוחב כאן" name="longitude" id="longitude">
+      </td>
+    </tr>
+    <tr>
+      <td><input type="text" placeholder="הכנס שם גן כאן" name="name" id="name">
+      </td>
+    </tr>
+    <tr>
+      <td><input type="text" placeholder="הכנס קישור לתמונה כאן" name="image" id="image">
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <table class="checkboxTable">
+          <tr>
+            <td>
+              <div class="child inline-block-child">
+                <label class="container">מגלשות
+                  <input type="checkbox" id="slides">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </td>
+            <td>
+              <div class="child inline-block-child">
+                <label class="container">קרוסלות
+                  <input type="checkbox" id="carousel">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </td>
+            <td>
+              <div class="child inline-block-child">
+                <label class="container">חול
+                  <input type="checkbox" id="sand">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </td>
+            <td>
+              <div class="child inline-block-child">
+                <label class="container">דשא
+                  <input type="checkbox" id="grass">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="child inline-block-child">
+                <label class="container">חבלים
+                  <input type="checkbox" id="ropes">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </td>
+            <td>
+              <div class="child inline-block-child">
+                <label class="container">נדנדות
+                  <input type="checkbox" id="swings">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </td>
+            <td>
+              <div class="child inline-block-child">
+                <label class="container">סולמות
+                  <input type="checkbox" id="ladder">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </td>
+            <td>
+              <div class="child inline-block-child">
+                <label class="container">ברזיות
+                  <input type="checkbox" id="water">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="child inline-block-child">
+                <label class="container">הצללה
+                  <input type="checkbox" id="shade">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </td>
+            <td>
+              <div class="child inline-block-child">
+                <label class="container">איזור ישיבה
+                  <input type="checkbox" id="sitting">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </td>
+            <td>
+              <div class="child inline-block-child">
+                <label class="container">חנייה
+                  <input type="checkbox" id="parking">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <table class="btnTable">
+          <tr>
+            <td>
+              <div class="child inline-block-child">
+                <button onclick="add()" class="addBtn" id="addBtn">הוספה/עדכון</button>
+              </div>
+            </td>
+            <td>
+              <div class="child inline-block-child">
+                <button class="deleteBtn" id="deleteBtn">מחיקת גן</button>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="child inline-block-child">
+                <button class="searchBtn" id="searchBtn">חיפוש</button>
+              </div>
+            </td>
+            <td>
+              <div class="child inline-block-child">
+                <button class="clearBtn" id="clearBtn">נקה</button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <td><a class="btn" href="index.html">חזרה לדף הראשי</a></td>
+  <table class="cloudTable">
+    <tr>
+      <td><img src="images/cloud2.png" alt="cloud2-img" width="150"></td>
+      <td>
+        <div id="user_div" class="loggedin-div">
+          <button onclick="logout()">Logout</button>
+        </div>
+      </td>
+      <td><img src="images/cloud1.png" alt="cloud1-img" width="150"></td>
+    </tr>
+  </table>
+  <div id="user_div" class="loggedin-div">
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCUfa_nyVOPDF_9EU-liWhe1kR6qDgjZB0",
+      authDomain: "playgrounds-in-holon.firebaseapp.com",
+      databaseURL: "https://playgrounds-in-holon.firebaseio.com",
+      projectId: "playgrounds-in-holon",
+      storageBucket: "playgrounds-in-holon.appspot.com",
+      messagingSenderId: "204381860815",
+      appId: "1:204381860815:web:0586fc370db4b0353f58ba",
+      measurementId: "G-RN3EEYDT9H"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script src="js/login.js"></script>
+  <script src="js/function.js"></script>
+</body>
+
+</html>

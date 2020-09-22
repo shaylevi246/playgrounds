@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+  <meta charset="utf-8">
+  <title>מפת גני השעשועים</title>
+  <link rel="stylesheet" href="css/styleformap.css">
+  <link rel="icon" href="images/favicon.ico">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
+
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+  <style>
+    #map {
+      height: 600px;
+      width: 100%;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+
+
+  <style>
+    /*
+     * These CSS rules affect the tooltips within maps with the custom-popup
+     * class. See the full CSS for all customizable options:
+     * https://github.com/mapbox/mapbox.js/blob/001754177f3985c0e6b4a26e3c869b0c66162c99/theme/style.css#L321-L366
+     */
+    .custom-popup .leaflet-popup-content-wrapper {
+      background: #2c3e50;
+      color: #fff;
+      text-align: center;
+      font-size: 10px;
+      line-height: 1px;
+    }
+
+    .custom-popup .leaflet-popup-content-wrapper a {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    =.custom-popup .leaflet-popup-tip {
+      content: " ";
+      position: absolute;
+      top: 100%;
+      /* At the bottom of the tooltip */
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: black transparent transparent transparent;
+
+    }
+  </style>
+
+
+  <style>
+    .leaflet-control-layers-toggle:after {
+      content: "חיפוש לפי קטגוריה";
+      color: #000;
+      border: black;
+    }
+
+    .leaflet-control-layers-toggle {
+      width: auto;
+      background-color: aqua;
+      background-position: 3px 50%;
+      padding: 3px;
+      padding-left: 36px;
+      text-decoration: none;
+      line-height: 36px;
+
+    }
+  </style>
+
+
+</head>
+
+<body>
+  <h1 class="headline"> מפת גני השעשועים בעיר חולון </h1>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+             https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCUfa_nyVOPDF_9EU-liWhe1kR6qDgjZB0",
+      authDomain: "playgrounds-in-holon.firebaseapp.com",
+      databaseURL: "https://playgrounds-in-holon.firebaseio.com",
+      projectId: "playgrounds-in-holon",
+      storageBucket: "playgrounds-in-holon.appspot.com",
+      messagingSenderId: "204381860815",
+      appId: "1:204381860815:web:0586fc370db4b0353f58ba",
+      measurementId: "G-RN3EEYDT9H"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+  <div class='custom-popup' id="map"></div>
+
+  <script>
+    var x = new Array(200);
+
+    var latitude = null;
+    var longitude = null;
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+
+        latitude = position.coords.latitude,
+          longitude = position.coords.longitude
+
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      innerHTML = "Geolocation is not supported by this browser.";
+    }
+
+    for (var i = 0; i < x.length; i++) {
+      x[i] = new Array(5);
+    }
+    var counter = 0;
+    var dbFeatures = firebase.database().ref().child('features');
+    dbFeatures.once('value', function(snapshot) {
+      if (snapshot.exists()) {
+
+        snapshot.forEach(function(data) {
+          x[counter][0] = data.val().Slides;
+          x[counter][1] = data.val().Carousel;
+          x[counter][2] = data.val().Sand;
+          x[counter][3] = data.val().Grass;
+          x[counter][4] = data.val().Ropes;
+          x[counter][5] = data.val().Ladder;
+          x[counter][6] = data.val().Swings;
+          x[counter][7] = data.val().Sitting;
+          x[counter][8] = data.val().Water;
+          x[counter][9] = data.val().Shadow;
+          x[counter][10] = data.val().Parking;
+          counter = counter + 1;
+
+        });
+
+      }
+    });
+
+    var database = firebase.database().ref().child('playground');
+    database.once('value', function(snapshot) {
+      if (snapshot.exists()) {
+        var playgrounds = [];
+        var slides = [];
+        var carousel = [];
+        var sand = [];
+        var grass = [];
+        var ropes = [];
+        var ladder = [];
+        var swings = [];
+        var sitting = [];
+        var water = [];
+        var shadow = [];
+        var parking = [];
+        counter = 0;
+
+        snapshot.forEach(function(data) {
+          var name = data.val().Name;
+          var address = data.val().Address;
+          var lat = data.val().Lat;
+          var lng = data.val().Lng;
+          var picture = data.val().Pic;
+          var show_nav = "https://www.google.co.il/maps/dir/" + latitude + "," + longitude + "/" + lat + "," + lng;
+
+          var marker = L.marker([lat, lng]);
+          marker.bindPopup("<b>" + name + "</b><br> כתובת: " + address + "</br><br> מגלשות: " + x[counter][0] + "</br><br> קרוסלות: " + x[counter][1] + "</br><br> חול: " + x[counter][2] + "</br><br> דשא: " + x[counter][3] +
+            "</br><br> חבלים: " + x[counter][4] + "</br><br> סולמות: " + x[counter][5] + "</br><br> נדנדות: " + x[counter][6] + "</br><br> איזור ישיבה: " + x[counter][7] + "</br><br> ברזיות: " + x[counter][8] + "</br><br> הצללה: " + x[
+              counter][9] + "</br><br> איזור חנייה: " + x[counter][10] + "</br><br> <a href= " + show_nav + " target='_blank'> נווט לכאן עם Google Maps</a></br>").openPopup();
+
+
+
+
+          playgrounds.push(marker);
+
+          if (x[counter][0] == "יש") {
+            slides.push(marker);
+          }
+
+          if (x[counter][1] == "יש") {
+            carousel.push(marker);
+          }
+
+          if (x[counter][2] == "יש") {
+            sand.push(marker);
+          }
+
+          if (x[counter][3] == "יש") {
+            grass.push(marker);
+          }
+
+          if (x[counter][4] == "יש") {
+            ropes.push(marker);
+          }
+
+          if (x[counter][5] == "יש") {
+            ladder.push(marker);
+          }
+
+          if (x[counter][6] == "יש") {
+            swings.push(marker);
+          }
+
+          if (x[counter][7] == "יש") {
+            sitting.push(marker);
+          }
+
+          if (x[counter][8] == "יש") {
+            water.push(marker);
+          }
+
+          if (x[counter][9] == "יש") {
+            shadow.push(marker);
+          }
+
+          if (x[counter][10] == "יש") {
+            parking.push(marker);
+
+          }
+
+          counter = counter + 1;
+        });
+        var show_playgrounds = L.layerGroup(playgrounds);
+        var show_slides = L.layerGroup(slides);
+        var show_carousel = L.layerGroup(carousel);
+        var show_sand = L.layerGroup(sand);
+        var show_grass = L.layerGroup(grass);
+        var show_ropes = L.layerGroup(ropes);
+        var show_ladder = L.layerGroup(ladder);
+        var show_swings = L.layerGroup(swings);
+        var show_sitting = L.layerGroup(sitting);
+        var show_water = L.layerGroup(water);
+        var show_shadow = L.layerGroup(shadow);
+        var show_parking = L.layerGroup(parking);
+
+        var streets_1 = L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=OJRwpIID9GMmewXnbCdy', {
+          attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+        });
+
+        var streets_2 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors'
+        });
+
+        var map = L.map('map', {
+          center: [32.011261, 34.774811],
+          zoom: 14,
+          layers: [streets_2, show_playgrounds]
+
+        });
+
+
+        var overlayMaps = {
+          "כל גני השעשועים": show_playgrounds,
+          "מגלשות": show_slides,
+          "קרוסלה": show_carousel,
+          "חול": show_sand,
+          "דשא": show_grass,
+          "חבלים": show_ropes,
+          "סולמות": show_ladder,
+          "נדנדות": show_swings,
+          "איזור ישיבה": show_sitting,
+          "ברזיות": show_water,
+          "הצללה": show_shadow,
+          "חנייה": show_parking,
+
+
+        };
+
+        var baseMaps = {
+          "מפה בסיסית": streets_1,
+          "מפה מפורטת": streets_2
+        };
+
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+
+      }
+    });
+  </script>
+
+  <table class="btnTable">
+    <tr>
+      <td><img src="images/cloud2.png" alt="cloud2-img" width="150"></td>
+      <td><a class="btn" href="index.html">חזרה לדף הראשי</a></td>
+      <td><img src="images/cloud1.png" alt="cloud1-img" width="150"></td>
+    </tr>
+  </table>
+
+</body>
+
+</html>

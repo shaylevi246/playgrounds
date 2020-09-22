@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title> רשימת גני שעשועים בחולון </title>
+  <link rel="stylesheet" href="css/styleforlist.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="images/favicon.ico">
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+</head>
+
+<bodylist dir="rtl">
+  <h1 class="headline"> רשימת גני השעשועים בחולון</h1>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+             https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCUfa_nyVOPDF_9EU-liWhe1kR6qDgjZB0",
+      authDomain: "playgrounds-in-holon.firebaseapp.com",
+      databaseURL: "https://playgrounds-in-holon.firebaseio.com",
+      projectId: "playgrounds-in-holon",
+      storageBucket: "playgrounds-in-holon.appspot.com",
+      messagingSenderId: "204381860815",
+      appId: "1:204381860815:web:0586fc370db4b0353f58ba",
+      measurementId: "G-RN3EEYDT9H"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+  <table style="width:100%" id="list_table">
+    <thead>
+      <tr>
+        <th>שם הגן</th>
+        <th>כתובת</th>
+        <th>מאפייני הגן</th>
+        <th>תמונות</th>
+        <th>קישור הגעה</th>
+      </tr>
+    </thead>
+
+  </table>
+
+  <script>
+    var x = new Array(200);
+      var latitude = null;
+    var longitude = null;
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+
+        latitude = position.coords.latitude,
+          longitude = position.coords.longitude
+
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      innerHTML = "Geolocation is not supported by this browser.";
+    }
+
+    for (var i = 0; i < x.length; i++) {
+      x[i] = new Array(5);
+    }
+    var counter = 0;
+    var dbFeatures = firebase.database().ref().child('features');
+    dbFeatures.once('value', function(snapshot) {
+      if (snapshot.exists()) {
+
+        snapshot.forEach(function(data) {
+          x[counter][0] = data.val().Slides;
+          x[counter][1] = data.val().Carousel;
+          x[counter][2] = data.val().Sand;
+          x[counter][3] = data.val().Grass;
+          x[counter][4] = data.val().Ropes;
+          x[counter][5] = data.val().Ladder;
+          x[counter][6] = data.val().Swings;
+          x[counter][7] = data.val().Sitting;
+          x[counter][8] = data.val().Water;
+          x[counter][9] = data.val().Shadow;
+          x[counter][10] = data.val().Parking;
+          counter = counter + 1;
+
+        });
+      }
+    });
+
+    var database = firebase.database().ref().child('playground');
+    database.once('value', function(snapshot) {
+      if (snapshot.exists()) {
+        var content = '';
+        counter = 0;
+
+        snapshot.forEach(function(data) {
+          var name = data.val().Name;
+          var address = data.val().Address;
+          var lat = data.val().Lat;
+          var lng = data.val().Lng;
+          
+          var picture = data.val().Pic;
+            var show_nav = "https://www.google.co.il/maps/dir/" + latitude + "," + longitude + "/" + lat + "," + lng;
+
+          content += '<tr>';
+          content += '<td>' + name + '</td>'; //column1
+          content += '<td>' + address + '</td>'; //column2
+          //                        content += '<td></td>';
+          content += '<td> <div class="tooltip">לחץ כאן <span class="tooltiptext"><div></div> <div> מגלשות: ' + x[counter][0] + '</div> <div> קרוסלות: ' + x[counter][1] + '</div><div> חול: ' + x[counter][2] + '</div><div> דשא: ' + x[counter][
+              3
+            ] + '</div><div> חבלים: ' + x[counter][4] + '</div><div> סולמות: ' + x[counter][5] + '</div><div> נדנדות: ' + x[counter][6] + '</div><div> איזור ישיבה: ' + x[counter][7] + '</div><div> ברזיות: ' + x[counter][8] +
+            '</div><div> הצללה: ' + x[counter][9] + '</div><div> איזור חנייה: ' + x[counter][10] + '</div> </span></div></td>';
+          content += '<td><div class="showPicture"><a href="' + picture + '?name=" target="_blank">לצפייה</a></div></td>';
+          content += '<td><div class="showtheway"><a href=' + show_nav + ' target="_blank">נווט לכאן</a></div></td>';
+          content += '</tr>';
+            
+            
+
+          counter = counter + 1;
+        });
+
+        $('#list_table').append(content);
+
+      }
+    });
+  </script>
+  <a class="btn" href="index.html">חזרה לדף הראשי</a>
+  <img class="playground_list" src="images/playground_list.png" alt="playground list background" width="700">
+  <div class="playground_grass"></div>
+
+
+
+</bodylist>
+
+</html>
